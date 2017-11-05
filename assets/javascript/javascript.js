@@ -22,11 +22,23 @@ $("#clear").on("click", function () {
 //onClick to post userSearch as input and append buttons to #buttons 
 $("#search").on("click", function () {
     //URL variable to hold 
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + userSearch + "&api_key=nRGB4uWDK4c3ebx5sl2CWHeh6Yj6Mh2H&limit=10";
+    var queryURL;
     //Variable to hold user input     
     var userSearch = $("#animalSearch").val();
+    //gets #button and adds button of user search 
     $("#buttons").append("<button>" + userSearch + "</button>");
+});
+
+
+
+
+
+//==============================================================================================
+//onClick to buttons tag to append images to #animalImages div 
+$("button").on("click", function () {
+    userSearch = $("#animalSearch").val();
     
+    queryURL = "https://api.giphy.com/v1/gifs/search?q=" + userSearch + "&api_key=nRGB4uWDK4c3ebx5sl2CWHeh6Yj6Mh2H&limit=25";
     // Performing our AJAX GET request
     $.ajax({
         url: queryURL,
@@ -37,20 +49,30 @@ $("#search").on("click", function () {
             console.log(response);
             // Storing an array of results in the results variable
             var results = response.data;
+            for (var i = 0; i < results.length; i++) {
 
-        });
+                var animalDiv = $("<div>");
+                var p = $("<p>").text("Rating is : " + results[i].rating);
 
-    console.log(userSearch);
+                var animalGif = $("<img>");
+//                $("#animalImage").prepend
+                $("img").attr("src", results[i].images.original.url);
+
+                animalDiv.append(p);
+                animalDiv.prepend(animalGif);
+                $("#animalImage").prepend(animalDiv);
+            }
+        })
+
 });
 
+console.log(userSearch);
 
 
 
-//==============================================================================================
-//onClick to buttons tag to append images to #animalImages div 
-$("button").on("click", function () {
-    $("#animalImages").append("<img>" + response.data.image + "<img>");
-})
+
+
+
 
 
 
