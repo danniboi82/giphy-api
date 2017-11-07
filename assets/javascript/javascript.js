@@ -1,22 +1,11 @@
-/*
-api key :    nRGB4uWDK4c3ebx5sl2CWHeh6Yj6Mh2H
-
-HOST:        api.giphy.com
-
-PATH:        GET /v1/gifs/search
-
-*/
-
-
-
 
 //OnClick to clear search results
 $("#clear").on("click", function () {
     $("#buttons").html("");
     $("#animalSearch").html("");
     $("#searchResult").html("");
+    $("#animalImage").html("");
 });
-
 
 //================================================================================================
 //onClick to post userSearch as input and append buttons to #buttons 
@@ -26,19 +15,17 @@ $("#search").on("click", function () {
     //Variable to hold user input     
     var userSearch = $("#animalSearch").val();
     //gets #button and adds button of user search 
+    //append로  새버턴에 id추가 가능한가??? 
     $("#buttons").append("<button>" + userSearch + "</button>");
+    console.log(userSearch);
 });
-
-
-
-
 
 //==============================================================================================
 //onClick to buttons tag to append images to #animalImages div 
-$("button").on("click", function () {
+$("#buttons").on("click", function () {
     userSearch = $("#animalSearch").val();
     
-    queryURL = "https://api.giphy.com/v1/gifs/search?q=" + userSearch + "&api_key=nRGB4uWDK4c3ebx5sl2CWHeh6Yj6Mh2H&limit=25";
+    queryURL = "https://api.giphy.com/v1/gifs/search?q=" + userSearch + "&api_key=nRGB4uWDK4c3ebx5sl2CWHeh6Yj6Mh2H&limit=10";
     // Performing our AJAX GET request
     $.ajax({
         url: queryURL,
@@ -55,38 +42,38 @@ $("button").on("click", function () {
                 var p = $("<p>").text("Rating is : " + results[i].rating);
 
                 var animalGif = $("<img>");
-//                $("#animalImage").prepend
-                $("img").attr("src", results[i].images.original.url);
-
+                animalGif.attr("src", results[i].images.fixed_height_still.url);
+                animalGif.attr("data-still", results[i].images.fixed_height_still.url);
+                animalGif.attr("data-animate", results[i].images.fixed_height.url);
+                animalGif.attr("data-state", "still");
+                animalGif.attr("class", "gif");
+                
                 animalDiv.append(p);
                 animalDiv.prepend(animalGif);
                 $("#animalImage").prepend(animalDiv);
+                
+//==============================================================================================
+//onClick to img tags 
+                $(".gif").on("click", function () {
+                    var state = $(this).data("state");
+                    
+                    if (state == "still") {
+                        $(this).attr("src", $(this).data("animate"));
+                        $(this).attr("data-state", "still");
+                    } else {
+                        $(this).attr("src", $(this).data("still"));
+                        $(this).attr("data-state", "still");
+               
+                    }
+                
+                });
             }
+    
         })
 
 });
 
-console.log(userSearch);
 
 
 
 
-
-
-
-
-
-//==============================================================================================
-//onClick to img tags 
-$("img").on("click", function () {
-    if (state == "still") {
-        $(this).attr("src", $(this).data("animate"));
-        $(this).attr("data-state", "still");
-    } else {
-        $(this).attr("src", $(this).data("still"));
-        $(this).data("state", "still");
-        console.log("Switched state: " + $(this).data("state"));
-
-    }
-
-});
