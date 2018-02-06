@@ -13,50 +13,56 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
         crossorigin="anonymous">
-
+    <link href="https://fonts.googleapis.com/css?family=Rammetto+One" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
+
+    <div class="jumbotron">
+        <h3 class='jumbo'>CYBER ZOO</h3>
+        <h5>Create your own zoo and watch funny images of your Favorite animals!!</h5>
+    </div>
     <div class="container">
-        <div class="jumbotron">
-            <h1 class="text-center">GIPHY GIF!!!</h1>
-        </div>
-
         <div class="row">
-            <div class="col-lg-12">
-                <div id="buttons">
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8"></div>
-            <div class="col-lg-4">
-                <div class="form-group">
-                    <label for="addAnimal">Add an animal :</label>
-                    <input type="search" class="form-control" id="animalSearch">
+            <form id="animal-form">
+                <h3>Button Station : <br><span>Enter animal and press 'Add Button' to add more animals below</span> </h3>
+                <div class="col-sm-10">
+                    <input type="text" id="animal-input" placeholder="Enter Animal Name">
                     <br>
-                    <button class="default-type" id="search">Search</button>
-                    <button class="default-type" id="clear">Clear ALL</button>
                 </div>
-            </div>
+                <div class="col-sm-2">
+
+                    <input id="add-animal" type="submit" value="Add Button">
+                </div>
+            </form>
         </div>
+        <br>
+
+        <h3>TRY IT!!! <span> Click on a button below!!</span> </h3>
+        <h3>Images LOAD!! <span> Click on an IMAGE to ANIMATE IT!!!</span> </h3>
 
         <div class="row">
-            <div class="col-lg-12">
-                <div id="animalImage"></div>
+            <div class="col-sm-12">
+                <div id="animal-buttons">
+
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div id="animals">
+
+                </div>
             </div>
         </div>
     </div>
 
 
 
-
-
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
     <script src="assets/javascript/javascript.js"></script>
 

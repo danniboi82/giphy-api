@@ -1,79 +1,90 @@
+$(document).ready(function() {
 
-//OnClick to clear search results
-$("#clear").on("click", function () {
-    $("#buttons").html("");
-    $("#animalSearch").html("");
-    $("#searchResult").html("");
-    $("#animalImage").html("");
-});
-
-//================================================================================================
-//onClick to post userSearch as input and append buttons to #buttons 
-$("#search").on("click", function () {
-    //URL variable to hold 
-    var queryURL;
-    //Variable to hold user input     
-    var userSearch = $("#animalSearch").val();
-    //gets #button and adds button of user search 
-    //append로  새버턴에 id추가 가능한가??? 
-    $("#buttons").append("<button>" + userSearch + "</button>");
-    console.log(userSearch);
-});
-
-//==============================================================================================
-//onClick to buttons tag to append images to #animalImages div 
-$("#buttons").on("click", function () {
-    userSearch = $("#animalSearch").val();
-    
-    queryURL = "https://api.giphy.com/v1/gifs/search?q=" + userSearch + "&api_key=nRGB4uWDK4c3ebx5sl2CWHeh6Yj6Mh2H&limit=10";
-    // Performing our AJAX GET request
-    $.ajax({
+    var animals = [
+      "rhino", "zebra", "wombat", "kangaroo", "cheeta", "orangutan",
+      "lion", "cat",
+    ];
+  
+    // function to make buttons and add to page
+    function populateButtons(arrayToUse, classToAdd, areaToAddTo) {
+      $(areaToAddTo).empty();
+  
+      for (var i = 0; i < arrayToUse.length; i++) {
+        var a = $("<button>");
+        a.addClass(classToAdd);
+        a.attr("data-type", arrayToUse[i]);
+        a.text(arrayToUse[i]);
+        $(areaToAddTo).append(a);
+      }
+  
+    }
+  
+    $(document).on("click", ".animal-button", function() {
+      $("#animals").empty();
+      $(".animal-button").removeClass("active");
+      $(this).addClass("active");
+  
+      var type = $(this).attr("data-type");
+      var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + type + "&api_key=dc6zaTOxFJmzC&limit=10";
+  
+      $.ajax({
         url: queryURL,
         method: "GET"
-    })
-        // After the data comes back from the API
-        .done(function (response) {
-            console.log(response);
-            // Storing an array of results in the results variable
-            var results = response.data;
-            for (var i = 0; i < results.length; i++) {
-
-                var animalDiv = $("<div>");
-                var p = $("<p>").text("Rating is : " + results[i].rating);
-
-                var animalGif = $("<img>");
-                animalGif.attr("src", results[i].images.fixed_height_still.url);
-                animalGif.attr("data-still", results[i].images.fixed_height_still.url);
-                animalGif.attr("data-animate", results[i].images.fixed_height.url);
-                animalGif.attr("data-state", "still");
-                animalGif.attr("class", "gif");
-                
-                animalDiv.append(p);
-                animalDiv.prepend(animalGif);
-                $("#animalImage").prepend(animalDiv);
-                
-//==============================================================================================
-//onClick to img tags 
-                $(".gif").on("click", function () {
-                    var state = $(this).data("state");
-                    
-                    if (state == "still") {
-                        $(this).attr("src", $(this).data("animate"));
-                        $(this).attr("data-state", "still");
-                    } else {
-                        $(this).attr("src", $(this).data("still"));
-                        $(this).attr("data-state", "still");
-               
-                    }
-                
-                });
-            }
-    
-        })
-
-});
-
-
-
-
-
+      })
+      .done(function(response) {
+        var results = response.data;
+  
+        for (var i = 0; i < results.length; i++) {
+          var animalDiv = $("<div class=\"animal-item\">");
+  
+          var rating = results[i].rating;
+  
+          var p = $("<p>").text("Rating: " + rating);
+  
+          var animated = results[i].images.fixed_height.url;
+          var still = results[i].images.fixed_height_still.url;
+  
+          var animalImage = $("<img>");
+          animalImage.attr("src", still);
+          animalImage.attr("data-still", still);
+          animalImage.attr("data-animate", animated);
+          animalImage.attr("data-state", "still");
+          animalImage.addClass("animal-image");
+  
+          animalDiv.append(p);
+          animalDiv.append(animalImage);
+  
+          $("#animals").append(animalDiv);
+        }
+      });
+    });
+  
+    $(document).on("click", ".animal-image", function() {
+  
+      var state = $(this).attr("data-state");
+  
+      if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+      }
+      else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+    });
+  
+    $("#add-animal").on("click", function(event) {
+      event.preventDefault();
+      var newAnimal = $("input").eq(0).val();
+  
+      if (newAnimal.length > 2) {
+        animals.push(newAnimal);
+      }
+  
+      populateButtons(animals, "animal-button", "#animal-buttons");
+  
+    });
+  
+    populateButtons(animals, "animal-button", "#animal-buttons");
+  });
+  
